@@ -1,0 +1,18 @@
+# macOS
+.DS_Store
+
+# Node.js
+node_modules/
+
+# Test data files
+*.geojson
+
+# Converted output files
+*_gcj02.geojson
+*_bd09.geojson
+bld_*.geojson
+*.converted.json
+
+# Logs
+*.log
+npm-debug.log*

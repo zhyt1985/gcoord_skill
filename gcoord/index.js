@@ -98,6 +98,31 @@ function normalizeCRS(code) {
   return CRS_ALIAS[normalized] || code.toUpperCase();
 }
 
+/**
+ * 参数验证和友好提示
+ */
+function validateParams(params) {
+  const missing = [];
+
+  if (!params.from && !params.f) {
+    missing.push('--from (源坐标系)');
+  }
+  if (!params.to && !params.t) {
+    missing.push('--to (目标坐标系)');
+  }
+
+  if (missing.length > 0) {
+    console.log('⚠️  提示: 未指定 ' + missing.join(' 和 '));
+    console.log('\n支持的坐标系:');
+    console.log('  WGS84   - GPS/地球坐标 (别名: gps, wgs84, 地球坐标)');
+    console.log('  GCJ02   - 高德/腾讯/火星 (别名: 高德, amap, 腾讯, gcj02)');
+    console.log('  BD09    - 百度坐标 (别名: 百度, baidu, bd09)');
+    console.log('  BD09MC  - 百度米制 (别名: bd09mc, 百度米制)');
+    console.log('  WebMercator - 墨卡托 (别名: 墨卡托, webmercator, epsg3857)');
+    console.log('\n将使用默认值: WGS84 → GCJ02\n');
+  }
+}
+
 // 命令行参数解析
 const args = process.argv.slice(2);
 const params = {};
@@ -108,6 +133,8 @@ for (let i = 0; i < args.length; i += 2) {
 
 // 执行转换
 try {
+  validateParams(params);
+
   const input = parseInput(params.input || params.i || '');
   const from = normalizeCRS(params.from || params.f || 'WGS84');
   const to = normalizeCRS(params.to || params.t || 'GCJ02');

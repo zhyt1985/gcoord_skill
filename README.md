@@ -2,6 +2,19 @@
 
 一个用于 Claude Code 的地理坐标系转换工具，专门处理中国地图坐标系互转问题。
 
+## 致谢
+
+本项目基于 [hujiulong/gcoord](https://github.com/hujiulong/gcoord) 开发，向原作者 **hujiulong** 致敬！感谢他提供了优秀的坐标转换核心算法库，让处理坐标系问题变得简单。
+
+## 开发工具
+
+本项目使用以下工具开发：
+
+- **Claude Code** - Anthropic 的 AI 命令行工具
+- **GLM 4.7** - 智谱 AI 提供的大语言模型
+
+---
+
 ## 功能特性
 
 - 🔄 **多坐标系支持**：WGS84 / GCJ02 / BD09 / BD09MC / WebMercator
@@ -31,24 +44,48 @@ cd ~/.claude/skills/gcoord_skill/gcoord
 npm install
 ```
 
-## 使用方法
+---
 
-### 在 Claude Code 中使用
+## 在 Claude Code 中使用
 
-使用自然语言调用：
+安装 skill 后，在 Claude Code 中可以直接使用 `/gcoord` 命令或自然语言调用：
+
+### 方式一：使用 /gcoord 命令
+
+```
+/gcoord 116.403988,39.914266 --from wgs84 --to gcj02
+```
+
+### 方式二：自然语言调用
 
 ```
 # 单点坐标转换
 帮我把 116.403988,39.914266 转成高德坐标
 
 # 文件转换
-把 data.geojson 转成百度坐标系
+把 @data.geojson 转成百度坐标系
 
 # 坐标系互转
 WGS84 转 GCJ02: [116.403988, 39.914266]
+
+# 转换并指定输出文件
+把 data.geojson 转成高德坐标，输出为 result.geojson
 ```
 
-### 命令行使用
+### 支持的自然语言模式
+
+| 模式 | 示例 |
+|------|------|
+| "转成/转换为/转到" | 转成高德坐标 |
+| "在...地图显示" | 在百度地图上显示 |
+| "...坐标转..." | GPS坐标转百度 |
+| "帮我转换/帮我转" | 帮我转换成火星坐标 |
+
+---
+
+## 命令行使用
+
+### 基本用法
 
 ```bash
 # 单点坐标转换
@@ -147,5 +184,6 @@ MIT License - 详见 [LICENSE](LICENSE) 文件
 
 ## 相关链接
 
-- [Claude Code](https://claude.ai/code) - Claude AI 的命令行工具
 - [gcoord 库](https://github.com/hujiulong/gcoord) - 坐标转换核心算法
+- [Claude Code](https://claude.ai/code) - Claude AI 的命令行工具
+- [GLM 4.7](https://bigmodel.cn/glm-coding) - 智谱 AI 大语言模型

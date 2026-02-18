@@ -95,7 +95,11 @@ function formatOutput(result, inputType) {
  */
 function normalizeCRS(code) {
   const normalized = code.toLowerCase().trim();
-  return CRS_ALIAS[normalized] || code.toUpperCase();
+  const crs = CRS_ALIAS[normalized] || code.toUpperCase();
+  if (gcoord[crs] === undefined) {
+    throw new Error(`不支持的坐标系: "${code}"。支持: WGS84, GCJ02, BD09, BD09MC, WebMercator`);
+  }
+  return crs;
 }
 
 /**
@@ -140,8 +144,8 @@ try {
   const to = normalizeCRS(params.to || params.t || 'GCJ02');
 
   let result;
-  if (input.type === 'geojson') {
-    result = gcoord.transform(input.data, gcoord[from], gcoord[to]);
+  if (input.type === 'batch') {
+    result = input.data.map(coord => gcoord.transform(coord, gcoord[from], gcoord[to]));
   } else {
     result = gcoord.transform(input.data, gcoord[from], gcoord[to]);
   }
